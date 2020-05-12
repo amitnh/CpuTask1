@@ -1,0 +1,47 @@
+LIBRARY IEEE;
+USE ieee.std_logic_1164.ALL;
+USE ieee.std_logic_arith.ALL;
+USE ieee.std_logic_unsigned.ALL;
+USE work.aux_package.ALL;
+ENTITY tb_top1 IS
+	generic (
+		n : positive := 8 ;
+		m : positive := 5 ;
+		k : positive := 2);
+END tb_top1;
+
+ARCHITECTURE dftb_top1 OF tb_top1 IS
+
+			signal cin : STD_LOGIC;
+			signal A,B : std_logic_vector(n-1 downto 0);
+			signal OPC : std_logic_vector(m-1 downto 0);
+		----------------------------------------
+			signal RES : std_logic_vector(2*n-1 downto 0); -- RES(HI,LO)
+			signal STATUS : std_logic_vector(k-1 downto 0);
+	
+begin
+	tester : ALU generic map(n, m, k) port map(cin,A,B,OPC,RES,STATUS);
+	-- run for 3600 ns
+	--------- start of stimulus section ------------------	
+	tb_clk : PROCESS
+	BEGIN
+		A<="00000010";
+		B<="00000011";
+		cin <= '0' ;
+		WAIT FOR 800 ns;
+		cin <= '1'; 
+		WAIT;
+	END PROCESS tb_clk;
+
+	
+	tb_din : PROCESS
+	BEGIN
+		OPC <= (others=>'0');
+		FOR i IN 0 TO 7 LOOP
+			OPC <= OPC +1;
+			wait for 100 ns;
+		END LOOP;
+				wait;
+	END PROCESS tb_din;
+
+END dftb_top1;

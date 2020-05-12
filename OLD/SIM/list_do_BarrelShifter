@@ -1,0 +1,14 @@
+onerror {resume}
+add list -width 10 /tb_bs/x
+add list /tb_bs/yi
+add list /tb_bs/s
+add list /tb_bs/x2
+add list /tb_bs/yi2
+add list /tb_bs/s2
+configure list -usestrobe 0
+configure list -strobestart {0 ps} -strobeperiod {0 ps}
+configure list -usesignaltrigger 1
+configure list -delta collapse
+configure list -signalnamewidth 0
+configure list -datasetprefix 0
+configure list -namelimit 5
