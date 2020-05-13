@@ -1,6 +1,6 @@
 LIBRARY IEEE;
 USE ieee.std_logic_1164.ALL;
-USE ieee.std_logic_arith.ALL;
+use ieee.numeric_std.all;
 USE ieee.std_logic_unsigned.ALL;
 USE work.aux_package.ALL;
 ENTITY tb_top1 IS
@@ -28,20 +28,63 @@ begin
 		A<="00000010";
 		B<="00000011";
 		cin <= '0' ;
-		WAIT FOR 800 ns;
-		cin <= '1'; 
+		OPC <= (others=>'0');
+	
+		
+		
+		
+		wait for 100 ns;
+		OPC<="00001";
+		wait for 100 ns;
+		OPC<="00010";
+		wait for 100 ns;
+		OPC<="00011";
+		wait for 100 ns;
+		OPC<="00100";
+		wait for 100 ns;
+		OPC<="00101";
+		wait for 100 ns;
+		OPC<="00110";
+		wait for 100 ns;
+		OPC<="00111";
+		wait for 100 ns;		
+		OPC<="01000";
+		wait for 100 ns;
+		
+		cin <= '1' ;
+		OPC <= (others=>'0');
+		wait for 100 ns;
+		OPC<="00001";
+		wait for 100 ns;
+		OPC<="00010";
+		wait for 100 ns;
+		OPC<="00011";
+		wait for 100 ns;
+		OPC<="00100";
+		wait for 100 ns;
+		OPC<="00101";
+		wait for 100 ns;
+		OPC<="00110";
+		wait for 100 ns;
+		OPC<="00111";
+		wait for 100 ns;		
+		OPC<="01000";
+		wait for 100 ns;
+		
+		-- FOR i IN 0 TO 10 LOOP
+			-- OPC <= OPC +'1';
+			-- wait for 100 ns;
+		-- END LOOP;
+		
+		-- cin <= '1';
+		
+		-- OPC <= (others=>'0');
+		-- FOR i IN 0 TO 10 LOOP
+			-- OPC <= OPC +'1';
+			-- wait for 100 ns;
+		-- END LOOP;
 		WAIT;
 	END PROCESS tb_clk;
 
-	
-	tb_din : PROCESS
-	BEGIN
-		OPC <= (others=>'0');
-		FOR i IN 0 TO 7 LOOP
-			OPC <= OPC +1;
-			wait for 100 ns;
-		END LOOP;
-				wait;
-	END PROCESS tb_din;
 
 END dftb_top1;

@@ -1,8 +1,8 @@
 LIBRARY ieee;
 USE ieee.std_logic_1164.all;
 USE work.aux_package.all;
---USE ieee.numeric_std.ALL;
-USE ieee.std_logic_ARITH.all;
+USE ieee.numeric_std.ALL;
+--USE ieee.std_logic_ARITH.all;
 use ieee.std_logic_unsigned.all;
 -------------------------------------
 ENTITY ALU IS
@@ -14,63 +14,70 @@ ENTITY ALU IS
   PORT (    cin : IN STD_LOGIC;
 			A,B : in std_logic_vector(n-1 downto 0);
 			OPC : in std_logic_vector(m-1 downto 0);
+
 		----------------------------------------
-			RES : out std_logic_vector(2*n-1 downto 0); -- RES(HI,LO)
+			RES : out std_logic_vector(2*n-1 downto 0); -- Result(HI,LO)
 			STATUS : out std_logic_vector(k-1 downto 0));
 END ALU;
 ------------- complete the top Architecture code --------------
 ARCHITECTURE struct OF ALU IS
-	SIGNAL adderRes : std_logic_vector(2*n-1 DOWNTO 0);
-	SIGNAL bsResultbsRes : std_logic_vector(2*n-1 DOWNTO 0);
+
+	SIGNAL adderResult : std_logic_vector(2*n-1 DOWNTO 0);
+	SIGNAL bsResultultbsResult : std_logic_vector(2*n-1 DOWNTO 0);
 	SIGNAL XwithZero : std_logic_vector(n DOWNTO 0); -- for the BarrelShfter
-	SIGNAL ACC : std_logic_vector(2*n-1 DOWNTO 0); -- for the BarrelShfter
-	
+	SIGNAL ACC : std_logic_vector(2*n-1 DOWNTO 0):=(others=> '0'); -- for the BarrelShfter
+	SIGNAL Result:std_logic_vector(2*n-1 downto 0);
 BEGIN
 
-PROCESS (OPC)
-    variable intOPC: integer;
-    BEGIN
-    intOPC:= conv_integer(unsigned(OPC));
-    RES<=(others=> '0');
-  	case intOPC is
-	  when 1 =>   RES <= A+B;
-	  when 2 =>   RES <= A-B;
-	  when 3 =>   RES <= A+B+cin;
-	  when 4 =>   RES <= A*B;
-	  when 5 =>   ACC <= A*B+ACC; RES<=ACC;
-	  when 6 =>   ACC <= (others=>'0');
-	  when 7 and A<B =>   RES <= B; --max
-	  when 7  =>   RES <= B;
-	  when 8 and A<B =>   RES <= A; -- min
-	  when others => RES <= B; --8
-	end case;
-  END PROCESS;
+
+PROCESS (OPC,A,B,cin)
+variable Along,Blong:std_logic_vector(2*n-1 downto 0);
+variable AccVar:std_logic_vector(2*n DOWNTO 0);
+	BEGIN
+	Along:=(others=> '0');
+	Blong:=(others=> '0');
+	Along(n-1 downto 0) := A;
+	Blong(n-1 downto 0) := B;
+
+
+	Result <= ( others => '0');
+	STATUS<="00";
+	  	case OPC(4 downto 0) is
+		  when "00001" =>   Result <= Along+Blong;
+		  when "00010" =>   Result <= Along-Blong;
+		  when "00011" =>   Result <= Along+Blong+cin;
+		  when "00100" =>   Result <= std_logic_vector(unsigned(A)*unsigned(B));
+		  when "00101" => AccVar :=  std_logic_vector(unsigned(A)*unsigned(B)+ unsigned(ACC));
+						ACC <=AccVar(2*n-1 DOWNTO 0);
+						Result <= AccVar(2*n-1 DOWNTO 0);
+		  when "00110" =>   ACC <= (others=>'0'); --acc Resultet
+		  when "00111" => if A<B then
+							Result <= Blong; --max
+							else Result <= Along;
+							end if;
+							
+		  when "01000" => if A<B then
+				Result <= Along; --min
+				else Result <= Blong;
+				end if;
+							
+		   when others => Result <= (others=> '0'); --not for me 
+		end case;
+		
+		
+		if Result = 0 then STATUS(1) <= '0';
+		else STATUS(1)<= '1'; end if;
+		if AccVar(2*n) = 0 then STATUS(0) <= '0';
+		else STATUS(0)<= '1'; end if;
+		RES<= Result;
+	END PROCESS;
 	
 	
 	
 	
 	
-	
-	-- XwithZero <= '0' & X;
-	-- AddSub:Adder generic map (n) port map (
-		-- cin => cin,
-		-- x => X,y => Y,
-		-- sel => sel, 
-		-- s => adderRes(n-1 downto 0),
-		-- cout =>adderRes(n)
-	-- );
-	-- MakeShifter: Shifter generic map (n+1,3) port map ( -- we did also Y(m) generic as a Bonus
-		-- x => XwithZero,
-		-- yi => Y,
-		-- s =>bsResultbsRes
-	-- );
-	-- OutSel:outputSelector generic map (n) port map (
-		-- adderResult => adderRes,
-		-- bsResultbsResult => bsResultbsRes, 
-		-- sel =>sel,
-		-- res =>result
-	-- );
 	
 
 END struct;
 
+--configure list -delta collapse

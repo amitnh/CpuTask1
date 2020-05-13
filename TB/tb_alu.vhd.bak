@@ -25,20 +25,20 @@ begin
 	--------- start of stimulus section ------------------	
 	tb_clk : PROCESS
 	BEGIN
-		A<=2;
-		B<=4;
+		A<="00000010";
+		B<="00000011";
 		cin <= '0' ;
 		WAIT FOR 800 ns;
 		cin <= '1'; 
 		WAIT;
 	END PROCESS tb_clk;
 
-	
+
 	tb_din : PROCESS
 	BEGIN
-		OPC <= (others=>'0');
-		FOR i IN 0 TO 7 LOOP
-			OPC <= OPC +1;
+		OPC <= (others<='0');
+		FOR i IN 0 TO 15 LOOP
+			OPC <= OPC + 1;
 			wait for 100 ns;
 		END LOOP;
 				wait;
