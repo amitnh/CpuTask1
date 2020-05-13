@@ -41,7 +41,7 @@ variable AccVar:std_logic_vector(2*n DOWNTO 0);
 
 
 	Result <= ( others => '0');
-	STATUS<="00";
+
 	  	case OPC(4 downto 0) is
 		  when "00001" =>   Result <= Along+Blong;
 		  when "00010" =>   Result <= Along-Blong;
@@ -61,14 +61,21 @@ variable AccVar:std_logic_vector(2*n DOWNTO 0);
 				else Result <= Blong;
 				end if;
 							
-		   when others => Result <= (others=> '0'); --not for me 
+		   when others => Result <= (others=> '1'); --not for me 
 		end case;
 		
 		
-		if Result = 0 then STATUS(1) <= '0';
-		else STATUS(1)<= '1'; end if;
-		if AccVar(2*n) = '0' then STATUS(0) <= '0';
-		else STATUS(0)<= '1'; end if;
+		if Result = 0 then 
+			STATUS <= "10";
+			else 
+			STATUS<= "00";
+		end if;
+		if AccVar(2*n) = '0' then
+			STATUS <= "00";
+			else 
+			STATUS<= "01";
+			AccVar:=(others=> '0');
+		end if;
 		RES<= Result;
 	END PROCESS;
 	
