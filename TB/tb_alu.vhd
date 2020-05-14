@@ -25,8 +25,8 @@ begin
 	--------- start of stimulus section ------------------	
 	tb_clk : PROCESS
 	BEGIN
-		A<="00000010";
-		B<="00000011";
+		A<="10000001";
+		B<="10000000";
 		cin <= '0' ;
 		OPC <= (others=>'0');
 	
@@ -34,42 +34,55 @@ begin
 		
 		
 		wait for 100 ns;
-		OPC<="00001";
-		wait for 100 ns;
-		OPC<="00010";
-		wait for 100 ns;
-		OPC<="00011";
-		wait for 100 ns;
-		OPC<="00100";
-		wait for 100 ns;
+
+		
+		
+		
 		OPC<="00101";
-		wait for 100 ns;
-		OPC<="00110";
-		wait for 100 ns;
-		OPC<="00111";
-		wait for 100 ns;		
-		OPC<="01000";
 		wait for 100 ns;
 		
-		cin <= '1' ;
-		OPC <= (others=>'0');
+		OPC<="00100";
 		wait for 100 ns;
-		OPC<="00001";
-		wait for 100 ns;
-		OPC<="00010";
-		wait for 100 ns;
-		OPC<="00011";
+		OPC<="00101";
 		wait for 100 ns;
 		OPC<="00100";
 		wait for 100 ns;
 		OPC<="00101";
 		wait for 100 ns;
-		OPC<="00110";
-		wait for 100 ns;
-		OPC<="00111";
+		OPC<="00100";
 		wait for 100 ns;		
-		OPC<="01000";
+		OPC<="00101";
 		wait for 100 ns;
+		wait for 100 ns;
+		OPC<="00100";
+		wait for 100 ns;		
+		OPC<="00101";
+		wait for 100 ns;
+		wait for 100 ns;
+		OPC<="00100";
+		wait for 100 ns;		
+		OPC<="00101";
+		wait for 100 ns;
+		
+		-- cin <= '1' ;
+		-- OPC <= (others=>'0');
+		-- wait for 100 ns;
+		-- OPC<="00101";
+		-- wait for 100 ns;
+		-- OPC<="00101";
+		-- wait for 100 ns;
+		-- OPC<="00101";
+		-- wait for 100 ns;
+		-- OPC<="00101";
+		-- wait for 100 ns;
+		-- OPC<="00101";
+		-- wait for 100 ns;
+		-- OPC<="00101";
+		-- wait for 100 ns;
+		-- OPC<="00101";
+		-- wait for 100 ns;		
+		-- OPC<="00101";
+		-- wait for 100 ns;
 		
 		-- FOR i IN 0 TO 10 LOOP
 			-- OPC <= OPC +'1';
