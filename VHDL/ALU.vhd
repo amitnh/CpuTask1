@@ -58,7 +58,7 @@ variable AccVar,tmp:std_logic_vector(2*n DOWNTO 0);
 
 							else
 							STATUS(0) <= '1';
-							tmp := (AccVar + ACC) -2**(2*n); -- resedue !
+							tmp := (AccVar + ACC) -2**(2*n);
 							Result := tmp(2*n-1 DOWNTO 0);
 							ACC<= (others=> '0');
 							end if;						
