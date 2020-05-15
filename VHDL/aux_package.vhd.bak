@@ -57,7 +57,7 @@ component outputSelector IS
 		k : positive := 2   -- STATUS length
 	);
   PORT (    adderRes,shifterRes: in STD_LOGIC_VECTOR (2*n-1 downto 0);
-			       adderSTATUS,shifterSTATUS : in std_logic_vector(k-1 downto 0);
+			       adderSTATUS,shifterSTATUS : in std_logic_vector(k-1 downto 0));
             OPC : in std_logic_vector(m-1 downto 0);
 
 		----------------------------------------

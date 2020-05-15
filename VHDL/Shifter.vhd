@@ -2,7 +2,6 @@ LIBRARY ieee;
 USE ieee.std_logic_1164.all;
 USE work.aux_package.all;
 USE ieee.numeric_std.ALL;
---USE ieee.std_logic_ARITH.all;
 use ieee.std_logic_unsigned.all;
 -------------------------------------
 ENTITY Shifter IS
