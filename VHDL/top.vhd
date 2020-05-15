@@ -20,14 +20,40 @@ entity top is
 end top;
 ------------- complete the top Architecture code --------------
 architecture arc_sys of top is
-
+	signal HI,LO :std_logic_vector(n-1 downto 0);
+	signal Alast,Blast : std_logic_vector(n-1 downto 0);
+	signal OPClast : std_logic_vector(m-1 downto 0);
+	signal RESlast :  std_logic_vector(2*n-1 downto 0);
+	signal STATUSlast :  std_logic_vector(k-1 downto 0);
 	
 begin
-	
-				
-	
-	
-	
+--------------------------------------------------------------
+ALUBuild : topALU generic map(n, m, k) port map(cin,Alast,Blast,OPClast,HI,LO,STATUSlast);
+		RESlast(n-1 downto 0)<=LO;
+		RESlast(2*n-1 downto n)<=HI;
+--------------------------------------------------------------
+PROCESS (clk, rst) --sequntial
+  BEGIN
+	IF (rst='1') THEN
+		Alast <= (others => '0');
+		Blast <= (others => '0');
+		OPClast <= (others => '0');
+		RESlast <= (others => '0');
+		STATUSlast <= (others => '0');
+	ELSIF (clk'EVENT and clk='1') THEN
+		IF (ena = '1') THEN
+		Alast <= A;
+		Blast <= B;
+		OPClast <= OPC;
+		RESlast(n-1 downto 0)<=LO;
+		RESlast(2*n-1 downto n)<=HI;
+		END IF;
+   END IF;
+  END PROCESS;
+  
+   Res<=RESlast;
+   STATUS<=STATUSlast;
+   
 end arc_sys;
 
 

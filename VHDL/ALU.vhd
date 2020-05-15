@@ -74,7 +74,12 @@ variable AccVar,tmp:std_logic_vector(2*n DOWNTO 0);
 				Result := Along; --min
 				else Result := Blong;
 				end if;
-							
+			when "01001" => --and
+						Result(n-1 downto 0) := A and B;				
+			when "01010" => -- or
+						Result(n-1 downto 0) := A or B;
+			when "01011" =>	--xor	
+						Result(n-1 downto 0) := A xor B;			
 		   when others => Result := (others=> '1'); --not for me 
 		end case;
 		
