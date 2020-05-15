@@ -33,42 +33,50 @@ BEGIN
 
 			
 PROCESS (OPC,A,B,cin)
-	variable a_unsig: UNSIGNED(n DOWNTO 0);
+	variable A_unsig: UNSIGNED(n DOWNTO 0);
+	variable Bint: integer;
 	variable AandCin: std_logic_vector(n DOWNTO 0);
-	variable tmptmp: std_logic_vector(n-1 DOWNTO 0);
 
 	BEGIN	
 		RES<=(others=> '0');
 		STATUS<=(others=> '0');
 
-
+		Bint := to_integer(unsigned(B));
 		case OPC(4 downto 0) is
 		  when "01100" =>
 						AandCin(n-1 downto 0) :=   A;
 						AandCin(n) := '0';
-						a_unsig := unsigned(AandCin) sll to_integer(unsigned(B));
+						A_unsig := unsigned(AandCin) sll Bint;
 		  when "01101" => 
 						AandCin(n-1 downto 0) :=   A;
 						AandCin(n) := '0';
-						a_unsig := unsigned(AandCin) sla to_integer(unsigned(B));
+						-- A_unsig := unsigned(AandCin) sla Bint;
 			
-		  when "01110" =>
-						AandCin(n-1 downto 0) :=   A;
-						AandCin(n) := '0';
-						a_unsig := unsigned(AandCin) srl to_integer(unsigned(B));
-		  when "01111" => 
+		  when "01110" => --RRA
+						AandCin(n-1 downto 0) :=   A; --start values
+						AandCin(n) := cin; -- not relevent
+						A_unsig := unsigned(AandCin);
+						for i in 0 to Bint loop
+						A_unsig (n) <= A_unsig (n-1); 
+						A_unsig := unsigned(AandCin) ror 1; --rotate B times
+						AandCin := std_logic_vector(A_unsig);
+						end loop;						
+						
+						-- A_unsig := unsigned(AandCin) srl Bint;
+		  when "01111" =>  --RRC
 						AandCin(n-1 downto 0) :=   A;
 						AandCin(n) := cin;
-						a_unsig := unsigned(AandCin) ror to_integer(unsigned(B));
-		  when others => a_unsig := unsigned(AandCin);
+						A_unsig := unsigned(AandCin) ror Bint;
+						AandCin := std_logic_vector(A_unsig);
+		  when others => A_unsig := unsigned(AandCin);
 		  end case;
 
 
-		AandCin := std_logic_vector( a_unsig);
+		
 		RES (n-1 downto 0) <= AandCin (n-1 downto 0);
 		STATUS(0) <= AandCin(n);
-		if(AandCin = 0) than
-			STATUS(1) = '1';
+		if AandCin = 0 then
+			STATUS(1) <= '1';
 		end if;
 	END PROCESS;
 	
