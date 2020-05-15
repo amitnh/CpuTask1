@@ -27,7 +27,7 @@ begin
 	tb_clk : PROCESS
 	BEGIN
 		A<="00000001";
-		B<="001";
+		B<="010";
 		cin <= '0' ;
 		OPC <= "01100";
 		wait for 100 ns;
@@ -47,6 +47,52 @@ begin
 		wait for 100 ns;
 		OPC <= "01111";
 		wait for 100 ns;
+		
+				A<="10000000";
+		B<="010";
+		cin <= '0' ;
+		OPC <= "01100";
+		wait for 100 ns;
+		OPC <= "01101";
+		wait for 100 ns;
+		OPC <= "01110";
+		wait for 100 ns;
+		OPC <= "01111";
+		wait for 100 ns;
+
+		cin <= '1' ;
+		OPC <= "01100";
+		wait for 100 ns;
+		OPC <= "01101";
+		wait for 100 ns;
+		OPC <= "01110";
+		wait for 100 ns;
+		OPC <= "01111";
+		wait for 100 ns;
+
+
+		A<="11111111";
+		B<="010";
+		cin <= '0' ;
+		OPC <= "01100";
+		wait for 100 ns;
+		OPC <= "01101";
+		wait for 100 ns;
+		OPC <= "01110";
+		wait for 100 ns;
+		OPC <= "01111";
+		wait for 100 ns;
+
+		cin <= '1' ;
+		OPC <= "01100";
+		wait for 100 ns;
+		OPC <= "01101";
+		wait for 100 ns;
+		OPC <= "01110";
+		wait for 100 ns;
+		OPC <= "01111";
+		wait for 100 ns;
+
 		
 		-- cin <= '1' ;
 		-- OPC <= (others=>'0');
