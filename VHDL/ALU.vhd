@@ -22,18 +22,24 @@ END ALU;
 ------------- complete the top Architecture code --------------
 ARCHITECTURE struct OF ALU IS
 
-	SIGNAL adderResult : std_logic_vector(2*n-1 DOWNTO 0);
-	SIGNAL bsResultultbsResult : std_logic_vector(2*n-1 DOWNTO 0);
-	SIGNAL XwithZero : std_logic_vector(n DOWNTO 0); -- for the BarrelShfter
+
 	SIGNAL ACC : std_logic_vector(2*n-1 DOWNTO 0):=(others=> '0'); -- for the BarrelShfter
 	--SIGNAL Result:std_logic_vector(2*n-1 downto 0);
+	--adder:
+	Signal sel:std_logic_vector(1 downto 0);
+	Signal adderRes:std_logic_vector(n-1 downto 0);
+	signal adderCout:std_logic;
 BEGIN
 
+--AddSub:Adder generic map (n) port map (cin,A,B,sel,adderCout,adderRes);
 
 PROCESS (OPC,A,B,cin)
 variable Along,Blong,Result:std_logic_vector(2*n-1 downto 0);
 variable AccVar,tmp:std_logic_vector(2*n DOWNTO 0);
+
+
 	BEGIN
+	
 	Along:=(others=> '0');
 	Blong:=(others=> '0');
 	Along(n-1 downto 0) := A;
@@ -44,8 +50,15 @@ variable AccVar,tmp:std_logic_vector(2*n DOWNTO 0);
 
 	  	case OPC(4 downto 0) is
 		  when "00001" =>   Result := Along+Blong;
+							--sel <= "00";
+							--Result(n downto 0) := adderCout & adderRes;
+							
 		  when "00010" =>   Result := Along-Blong;
+							--sel <= "10";
+							--Result(n downto 0) := adderCout & adderRes;
 		  when "00011" =>   Result := Along+Blong+cin;
+		  					--sel <= "01";
+							--Result(n downto 0) := adderCout & adderRes;
 		  when "00100" =>   Result := std_logic_vector(unsigned(A)*unsigned(B));
 		  
 		  when "00101" =>   AccVar := ( others => '0');

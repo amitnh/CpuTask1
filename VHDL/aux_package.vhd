@@ -87,6 +87,15 @@ component topALU IS
 			Status: out std_logic_vector(k-1 downto 0));
 			
 END component;
+-------------------------------------
+component Adder IS
+  GENERIC (n : INTEGER);
+  PORT (     cin: IN STD_LOGIC;
+			 x,y: IN STD_LOGIC_VECTOR (n-1 DOWNTO 0);
+			 sel: IN STD_LOGIC_VECTOR (1 DOWNTO 0);
+            cout: OUT STD_LOGIC;
+               s: OUT STD_LOGIC_VECTOR(n-1 downto 0));
+END component;
   
 end aux_package;
 
