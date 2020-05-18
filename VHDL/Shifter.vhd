@@ -40,7 +40,17 @@ PROCESS (OPC,A,B,cin)
 		RES<=(others=> '0');
 		STATUS<=(others=> '0');
 
-		Bint := to_integer(unsigned(B));
+		case B is
+			when "000" => Bint:=0;
+			when "001" => Bint:=1;
+			when "010" => Bint:=2;
+			when "011" => Bint:=3;
+			when "100" => Bint:=4;
+			when "101" => Bint:=5;
+			when "110" => Bint:=6;
+			when others => Bint:=7;
+		end case;
+			
 		case OPC(4 downto 0) is
 		  when "01100" =>-- RLA
 						AandCin(n-1 downto 0) :=   A; --start values

@@ -14,17 +14,18 @@ END tb;
 	
 ARCHITECTURE dtb OF tb IS
 
-			signal rst,ena,clk,cin :std_logic;
-			signal A,B : std_logic_vector(n-1 downto 0);
-			signal OPC : std_logic_vector(m-1 downto 0);
+			signal rst,ena,clk :std_logic;
+			signal cin :std_logic:='0';
+			signal A,B : std_logic_vector(n-1 downto 0):=(others=> '0');
+			signal OPC : std_logic_vector(m-1 downto 0):=(others=> '0');
 		----------------------------------------
-			signal RES : std_logic_vector(2*n-1 downto 0);
-			signal Status: std_logic_vector(k-1 downto 0);
+			signal RES : std_logic_vector(2*n-1 downto 0):=(others=> '0');
+			signal Status: std_logic_vector(k-1 downto 0):=(others=> '0');
 			
 			signal gen: boolean:=true;
 			signal done: boolean:=false;
-			constant read_file_location:string(1 to 33) := "C:\Users\amitn\Desktop\infile.txt";
-			constant write_file_location:string(1 to 34) := "C:\Users\amitn\Desktop\outfile.txt";
+			constant read_file_location:string(1 to 50) := "C:\Users\TalKa\Desktop\orgenized folder\infile.txt";
+			constant write_file_location:string(1 to 51) := "C:\Users\TalKa\Desktop\orgenized folder\outfile.txt";
 	
 
 begin
@@ -39,7 +40,7 @@ begin
 	file infile : text open read_mode is read_file_location;
 	file outfile : text open write_mode is write_file_location;
 	variable L:Line;
-	variable in_OPC:bit_vector(k-1 downto 0);
+	variable in_OPC:bit_vector(m-1 downto 0);
 	variable in_A:bit_vector(n-1 downto 0);
 	variable in_B:bit_vector(n-1 downto 0);
 	variable in_cin:bit;
@@ -50,7 +51,18 @@ begin
 	BEGIN
 	write(L,write_fileheader);
 	writeline(outfile,L);
+
+		--------------------------------
+	wait for ton;
+	clk<='1';
+	OPC<=(others => '0');
+	A<=(others => '0');
+	B<=(others => '0');
+	cin<='0';
 	
+	wait for ton;
+	clk<='0';
+
 	while not endfile(infile) loop
 		readline (infile,L);
 		--------------------------------
@@ -74,6 +86,7 @@ begin
 		B<=to_stdlogicvector(in_B);
 		cin<=to_stdulogic(in_cin);
 		--------------------------------
+		
 		wait until (gen'event and gen=true);
 		clk<='0';
 		--HI:=RES(2*n-1 downto n);
@@ -82,7 +95,10 @@ begin
 		write(L,to_bitvector(RES(n-1 downto 0)),left,10);
 		write(L,to_bitvector(STATUS));
 		writeline(outfile,L);
+
+	
 	end loop;
+	
 	done<= true;
 	file_close(infile);
 	file_close(outfile);
@@ -90,5 +106,5 @@ begin
 	wait;
 	END PROCESS tb_clk;
 
-
+--configure list -delta collapse
 END dtb;

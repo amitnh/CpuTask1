@@ -21,12 +21,12 @@ entity top is
 end top;
 ------------- complete the top Architecture code --------------
 architecture arc_sys of top is
-	signal cinlast :std_logic:='0';
-	signal HI,LO :std_logic_vector(n-1 downto 0):=(others=> '0');
-	signal Alast,Blast : std_logic_vector(n-1 downto 0):=(others=> '0');
-	signal OPClast : std_logic_vector(m-1 downto 0):=(others=> '0');
-	signal RESlast :  std_logic_vector(2*n-1 downto 0):=(others=> '0');
-	signal STATUSlast :  std_logic_vector(k-1 downto 0):=(others=> '0');
+	signal cinlast :std_logic;
+	signal HI,LO :std_logic_vector(n-1 downto 0);
+	signal Alast,Blast : std_logic_vector(n-1 downto 0);
+	signal OPClast : std_logic_vector(m-1 downto 0);
+	signal RESlast :  std_logic_vector(2*n-1 downto 0);
+	signal STATUSlast :  std_logic_vector(k-1 downto 0);
 	
 begin
 --------------------------------------------------------------
