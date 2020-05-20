@@ -30,7 +30,7 @@ architecture arc_sys of top is
 	
 begin
 --------------------------------------------------------------
-ALUBuild : topALU generic map(n, m, k) port map(cinlast,Alast,Blast,OPClast,HI,LO,STA);
+ALUBuild : topALU generic map(n, m, k) port map(rst,ena,clk,cinlast,Alast,Blast,OPClast,HI,LO,STA);
 		-- RESlast(n-1 downto 0)<=LO;
 		-- RESlast(2*n-1 downto n)<=HI;
 --------------------------------------------------------------

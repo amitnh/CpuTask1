@@ -3,16 +3,16 @@ USE ieee.std_logic_1164.ALL;
 use ieee.numeric_std.all;
 USE ieee.std_logic_unsigned.ALL;
 USE work.aux_package.ALL;
-ENTITY tb_top1 IS
+ENTITY tb_alu IS
 	generic (
 		n : positive := 8 ;
 		m : positive := 5 ;
 		k : positive := 2);
-END tb_top1;
+END tb_alu;
 
-ARCHITECTURE dftb_top1 OF tb_top1 IS
+ARCHITECTURE dftb_alu OF tb_alu IS
 
-			signal cin : STD_LOGIC;
+			signal rst,ena,clk,cin : STD_LOGIC;
 			signal A,B : std_logic_vector(n-1 downto 0);
 			signal OPC : std_logic_vector(m-1 downto 0);
 		----------------------------------------
@@ -20,55 +20,47 @@ ARCHITECTURE dftb_top1 OF tb_top1 IS
 			signal STATUS : std_logic_vector(k-1 downto 0);
 	
 begin
-	tester : ALU generic map(n, m, k) port map(cin,A,B,OPC,RES);
+	tester : ALU generic map(n, m, k) port map(rst,ena,clk,cin,A,B,OPC,RES);
 	-- run for 3600 ns
 	--------- start of stimulus section ------------------	
-	tb_clk : PROCESS
+	tb_test : PROCESS
 	BEGIN
-		A<="10000001";
-		B<="10000000";
+		A<="00000010";
+		B<="00000001";
 		cin <= '0' ;
-		OPC <= (others=>'0');
-	
-		
-		
-		
-		wait for 100 ns;
-OPC<="00001";
-		wait for 100 ns;OPC<="00001";
-		wait for 100 ns;OPC<="00011";
-		wait for 100 ns;OPC<="00001";
-		wait for 100 ns;OPC<="00010";
-		wait for 100 ns;OPC<="00101";
-		wait for 100 ns;
-		
-		
-		
 		OPC<="00101";
-		wait for 100 ns;
+		wait for 50 ns;OPC<="00101";
+		wait for 50 ns;OPC<="00101";
+		wait for 50 ns;OPC<="00101";
+		wait for 50 ns;OPC<="00101";
+		wait for 50 ns;OPC<="00101";
+		wait for 50 ns;
 		
-		OPC<="00100";
-		wait for 100 ns;
-		OPC<="00101";
-		wait for 100 ns;
-		OPC<="00100";
-		wait for 100 ns;
-		OPC<="00101";
-		wait for 100 ns;
-		OPC<="00100";
-		wait for 100 ns;		
-		OPC<="00101";
-		wait for 100 ns;
-		wait for 100 ns;
-		OPC<="00100";
-		wait for 100 ns;		
-		OPC<="00101";
-		wait for 100 ns;
-		wait for 100 ns;
-		OPC<="00100";
-		wait for 100 ns;		
-		OPC<="00101";
-		wait for 100 ns;
+		-- OPC<="00101";
+		-- wait for 100 ns;
+		
+		-- OPC<="00100";
+		-- wait for 100 ns;
+		-- OPC<="00101";
+		-- wait for 100 ns;
+		-- OPC<="00100";
+		-- wait for 100 ns;
+		-- OPC<="00101";
+		-- wait for 100 ns;
+		-- OPC<="00100";
+		-- wait for 100 ns;		
+		-- OPC<="00101";
+		-- wait for 100 ns;
+		-- wait for 100 ns;
+		-- OPC<="00100";
+		-- wait for 100 ns;		
+		-- OPC<="00101";
+		-- wait for 100 ns;
+		-- wait for 100 ns;
+		-- OPC<="00100";
+		-- wait for 100 ns;		
+		-- OPC<="00101";
+		-- wait for 100 ns;
 		
 		-- cin <= '1' ;
 		-- OPC <= (others=>'0');
@@ -103,7 +95,29 @@ OPC<="00001";
 			-- wait for 100 ns;
 		-- END LOOP;
 		WAIT;
+	END PROCESS tb_test;
+
+tb_ena : PROCESS
+	BEGIN
+		ena <= '1';--, '1' after 200 ns
+		
+		wait;
+	END PROCESS tb_ena;
+	
+	tb_rst : PROCESS
+	BEGIN
+		rst <= '0';
+		-- wait for 100 ns;
+		-- rst <= '0';
+		wait;
+	END PROCESS tb_rst;
+	
+		tb_clk : PROCESS
+	BEGIN
+		clk <= '0' ;
+		WAIT FOR 50 ns;
+		clk <= '1'; 
+		WAIT FOR 50 ns;
 	END PROCESS tb_clk;
 
-
-END dftb_top1;
+END dftb_alu;

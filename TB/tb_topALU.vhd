@@ -25,8 +25,28 @@ begin
 	--------- start of stimulus section ------------------	
 	tb_clk : PROCESS
 	BEGIN
-	wait for 100 ns;
-		A<="00000001";--add no carry
+
+		A<="00000010";--add no carry
+		B<="00000010";
+		cin <= '0' ;
+		OPC <= "00101";
+		wait for 100 ns;
+		A<="00000010";--add no carry
+		B<="00000010";
+		cin <= '0' ;
+		OPC <= "00101";
+		wait for 100 ns;
+		A<="00000010";--add no carry
+		B<="00000010";
+		cin <= '0' ;
+		OPC <= "00101";
+		wait for 100 ns;
+		A<="00000010";--add no carry
+		B<="00000010";
+		cin <= '0' ;
+		OPC <= "00101";
+				wait for 100 ns;
+			A<="00000001";--add no carry
 		B<="00000010";
 		cin <= '0' ;
 		OPC <= "00010";

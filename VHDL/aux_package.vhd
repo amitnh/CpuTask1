@@ -26,7 +26,7 @@ package aux_package is
 		m : positive := 5 ; -- OPC length
 		k : positive := 2   -- STATUS length
 	);
-  PORT (    cin : IN STD_LOGIC;
+  PORT (    rst,ena,clk,cin : IN STD_LOGIC;
 			A,B : in std_logic_vector(n-1 downto 0);
 			OPC : in std_logic_vector(m-1 downto 0);
 		----------------------------------------
@@ -77,7 +77,7 @@ component topALU IS
 		);
   PORT ( 			
 		----------------------------------------
-			cin : IN STD_LOGIC;
+			rst,ena,clk,cin : IN STD_LOGIC;
 			A : in std_logic_vector(n-1 downto 0);
 			B : in std_logic_vector(2 downto 0);
 			OPC : in std_logic_vector(m-1 downto 0);

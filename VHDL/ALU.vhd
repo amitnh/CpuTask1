@@ -11,7 +11,9 @@ ENTITY ALU IS
 		m : positive := 5 ; -- OPC length
 		k : positive := 2   -- STATUS length
 	);
-  PORT (    cin : IN STD_LOGIC:='0';
+  PORT (
+			rst,ena,clk: in std_logic;
+			cin : IN STD_LOGIC:='0';
 			A,B : in std_logic_vector(n-1 downto 0):=(others=> '0');
 			OPC : in std_logic_vector(m-1 downto 0):=(others=> '0');
 
@@ -24,7 +26,7 @@ END ALU;
 ARCHITECTURE struct OF ALU IS
 
 
-	SIGNAL ACC : std_logic_vector(2*n-1 DOWNTO 0):=(others=> '0'); -- for the BarrelShfter
+	SIGNAL ACC: std_logic_vector(2*n-1 DOWNTO 0):=(others=> '0'); -- for the BarrelShfter
 	--SIGNAL Result:std_logic_vector(2*n-1 downto 0);
 	--adder:
 	Signal sel:std_logic_vector(1 downto 0):="00";
@@ -34,16 +36,16 @@ ARCHITECTURE struct OF ALU IS
 BEGIN
 
 AddSub:Adder generic map (n) port map (cin,A,B,sel,adderCout,adderRes);
-sel(1)<=OPC(1);
+sel(1)<= not OPC(0);
 sel(0)<=OPC(1) XNOR OPC (0);
 
 
-PROCESS (OPC,A,B,cin)
+PROCESS (OPC,A,B,cin,clk)
 variable Along,Blong,Result:std_logic_vector(2*n-1 downto 0);
-variable AccVar,tmp:std_logic_vector(2*n DOWNTO 0);
 
 	BEGIN
-	
+	IF (clk'EVENT and clk='1') THEN
+		IF (ena = '1') THEN
 	Along:=(others=> '0');
 	Blong:=(others=> '0');
 	Along(n-1 downto 0) := A;
@@ -64,23 +66,12 @@ variable AccVar,tmp:std_logic_vector(2*n DOWNTO 0);
 							
 		  when "00100" =>   Result := std_logic_vector(unsigned(A)*unsigned(B));
 		  
-		  when "00101" =>   AccVar := ( others => '0');
-							AccVar(2*n-1 downto 0) := std_logic_vector(unsigned(A)*unsigned(B));							
-							
-							if (AccVar + ACC) < 2**(2*n) - 1  then -- check if Acc makes CARRY and zeroes him
-							AccVar := AccVar + ACC;
-							ACC <=AccVar(2*n-1 DOWNTO 0);
-							Result := AccVar(2*n-1 DOWNTO 0);
-
-							else
-					
-							tmp := (AccVar + ACC) -2**(2*n);
-							Result := tmp(2*n-1 DOWNTO 0);
-							ACC<= (others=> '0');
-							end if;						
-							
-							
+		  when "00101" =>	Result:= std_logic_vector(unsigned(ACC)+(unsigned(A)*unsigned(B)));
+							ACC<=Result;
+		  
 		  when "00110" =>   ACC <= (others=>'0'); --acc Resultet
+
+							
 		  when "00111" => if A<B then
 							Result := Blong; --max
 							else Result := Along;
@@ -101,12 +92,12 @@ variable AccVar,tmp:std_logic_vector(2*n DOWNTO 0);
 		
 
 		RES <= Result; -- we used an internal signal Result
+		end if;
+		end if;
 		
 	END PROCESS;
 	
-	
-	-- PROCESS(OPC,A,B)
-	
+
 	-- variable Result:std_logic_vector(2*n-1 downto 0);
 	-- variable AccVar,tmp:std_logic_vector(2*n DOWNTO 0);
 	-- begin
@@ -143,3 +134,22 @@ variable AccVar,tmp:std_logic_vector(2*n DOWNTO 0);
 END struct;
 
 --configure list -delta collapse
+
+
+		  -- when "00101" =>   AccVar := ( others => '0');
+							-- AccVar(2*n-1 downto 0) := std_logic_vector(unsigned(A)*unsigned(B));							
+							
+							-- if (AccVar + ACC) < 2**(2*n) - 1  then -- check if Acc makes CARRY and zeroes him
+							-- AccVar := AccVar + ACC;
+							-- ACC <=AccVar(2*n-1 DOWNTO 0);
+							-- Result := AccVar(2*n-1 DOWNTO 0);
+
+							-- else
+					
+							-- tmp := (AccVar + ACC) -2**(2*n);
+							-- Result := tmp(2*n-1 DOWNTO 0);
+							-- ACC<= (others=> '0');
+							-- end if;						
+							
+							
+		  -- when "00110" =>   ACC <= (others=>'0'); --acc Resultet

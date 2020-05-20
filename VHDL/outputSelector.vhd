@@ -10,7 +10,7 @@ ENTITY outputSelector IS
 		m : positive := 5 ; -- OPC length
 		k : positive := 2   -- STATUS length
 		);
-  PORT ( 
+  PORT ( 	
 			adderRes,shifterRes: in STD_LOGIC_VECTOR (2*n-1 downto 0);
 			shifterSTATUS : in std_logic_vector(k-1 downto 0);
 			OPC : in std_logic_vector(m-1 downto 0);

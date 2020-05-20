@@ -14,7 +14,8 @@ END tb;
 	
 ARCHITECTURE dtb OF tb IS
 
-			signal rst,ena,clk :std_logic;
+			signal rst,ena :std_logic;
+			signal clk :std_logic:='0';
 			signal cin :std_logic:='0';
 			signal A,B : std_logic_vector(n-1 downto 0):=(others=> '0');
 			signal OPC : std_logic_vector(m-1 downto 0):=(others=> '0');
@@ -70,23 +71,24 @@ begin
 		next when not good;
 		
 		--------------------------------
-		wait until (gen'event and gen=false);		
+		wait until (gen'event and gen=true);
+	
 		OPC<=to_stdlogicvector(in_OPC);
 		A<=to_stdlogicvector(in_A);
 		B<=to_stdlogicvector(in_B);
 		cin<=to_stdulogic(in_cin);
-		clk<='1';
+		clk<='1';	
 		--------------------------------
 		
-		wait until (gen'event and gen=true);
-		
+		wait until (gen'event and gen=false);
+		clk<='0';
 		--HI:=RES(2*n-1 downto n);
 		--LO:= RES(n-1 downto 0);
-		write(L,to_bitvector(RES(2*n-1 downto n)),left,10);
-		write(L,to_bitvector(RES(n-1 downto 0)),left,10);
+		write(L,to_bitvector(RES(2*n-1 downto n)),left,16);
+		write(L,to_bitvector(RES(n-1 downto 0)),left,16);
 		write(L,to_bitvector(STATUS));
 		writeline(outfile,L);
-		clk<='0';
+
 	end loop;
 	
 	done<= true;
