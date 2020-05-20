@@ -26,25 +26,26 @@ begin
 	tb_clk : PROCESS
 	BEGIN
 	wait for 100 ns;
-		A<="00000111";--add no carry
-		B<="00000001";
+		A<="00000001";--add no carry
+		B<="00000010";
 		cin <= '0' ;
-		OPC <= "00001";
+		OPC <= "00010";
 		wait for 100 ns;
-		A<="00000111";--add no carry
-		B<="00000001";
-		cin <= '1' ;
-		OPC <= "00001";
-		wait for 100 ns;
-		A<="00000111";--add no carry
-		B<="00000001";
+		A<="00000001";--add no carry
+		B<="00000010";
 		cin <= '1' ;
 		OPC <= "00010";
 		wait for 100 ns;
-		A<="00000111";--add no carry
+		A<="00000001";--add no carry
+		B<="00000010";
+		cin <= '0' ;
+		OPC <= "00010";
+		wait for 100 ns;
+		A<="00000001";--add no carry
 		B<="00000010";
 		cin <= '1' ;
-		OPC <= "00001";
+		OPC <= "00010";
+	
 		
 		
 		

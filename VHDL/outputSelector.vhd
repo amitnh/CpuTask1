@@ -30,7 +30,7 @@ BEGIN
 	if OPC(3 downto 2) = "11" then --shifter
 		HI<=shifterRes(2*n-1 downto n);
 		LO<=shifterRes(n-1 downto 0);
-		Status<= shifterSTATUS;
+		STATUS<= shifterSTATUS;
 	else -- alu result
 		if adderRes(2*n-1 downto n)>0 then STATUS(0)<='1'; else STATUS(0)<='0'; END IF;
 		if adderRes(n-1 downto 0)=0 then STATUS(1)<='1';else STATUS(1)<='0'; END IF;

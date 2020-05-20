@@ -26,11 +26,11 @@ architecture arc_sys of top is
 	signal Alast,Blast : std_logic_vector(n-1 downto 0):=(others=> '0');
 	signal OPClast : std_logic_vector(m-1 downto 0):=(others=> '0');
 	signal RESlast :  std_logic_vector(2*n-1 downto 0):=(others=> '0');
-	signal STATUSlast :  std_logic_vector(k-1 downto 0):=(others=> '0');
+	signal STATUSlast,STA :  std_logic_vector(k-1 downto 0):=(others=> '0');
 	
 begin
 --------------------------------------------------------------
-ALUBuild : topALU generic map(n, m, k) port map(cinlast,Alast,Blast,OPClast,HI,LO,STATUSlast);
+ALUBuild : topALU generic map(n, m, k) port map(cinlast,Alast,Blast,OPClast,HI,LO,STA);
 		-- RESlast(n-1 downto 0)<=LO;
 		-- RESlast(2*n-1 downto n)<=HI;
 --------------------------------------------------------------
@@ -44,16 +44,20 @@ PROCESS (clk, rst) --sequntial
 		RESlast <= (others => '0');
 	ELSIF (clk'EVENT and clk='1') THEN
 		IF (ena = '1') THEN
+		---------------in------------------
 		Alast <= A;
 		Blast <= B;
 		cinlast<=cin;
 		OPClast <= OPC;
+		-------------out-------------------
 		RESlast(n-1 downto 0)<=LO;
 		RESlast(2*n-1 downto n)<=HI;
+		STATUSlast<=STA;
 		END IF;
    END IF;
   END PROCESS;
   
+
    Res<=RESlast;
    STATUS<=STATUSlast;
    

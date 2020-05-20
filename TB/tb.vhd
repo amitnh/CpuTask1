@@ -70,24 +70,23 @@ begin
 		next when not good;
 		
 		--------------------------------
-		wait until (gen'event and gen=false);
-		clk<='1';
+		wait until (gen'event and gen=false);		
 		OPC<=to_stdlogicvector(in_OPC);
 		A<=to_stdlogicvector(in_A);
 		B<=to_stdlogicvector(in_B);
 		cin<=to_stdulogic(in_cin);
+		clk<='1';
 		--------------------------------
 		
 		wait until (gen'event and gen=true);
-		clk<='0';
+		
 		--HI:=RES(2*n-1 downto n);
 		--LO:= RES(n-1 downto 0);
 		write(L,to_bitvector(RES(2*n-1 downto n)),left,10);
 		write(L,to_bitvector(RES(n-1 downto 0)),left,10);
 		write(L,to_bitvector(STATUS));
 		writeline(outfile,L);
-
-	
+		clk<='0';
 	end loop;
 	
 	done<= true;

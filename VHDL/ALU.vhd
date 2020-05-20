@@ -54,33 +54,33 @@ variable AccVar,tmp:std_logic_vector(2*n DOWNTO 0);
 
 
 	  	case OPC(4 downto 0) is
-		  when "00001" =>   
+		  when "00001" =>   --Result := Along + Blong;
 							Result(n downto 0) := adderCout & adderRes;	
-		  when "00010" =>   
+		  when "00010" =>   --Result := Along - Blong;
 							Result(n downto 0) := adderCout & adderRes;
 							Result(2*n-1 downto n) := (others => adderCout);
-		  when "00011" =>   
+		  when "00011" =>   --Result := Along + Blong + cin;
 							Result(n downto 0) := adderCout & adderRes;
 							
 		  when "00100" =>   Result := std_logic_vector(unsigned(A)*unsigned(B));
 		  
-		  -- when "00101" =>   AccVar := ( others => '0');
-							-- AccVar(2*n-1 downto 0) := std_logic_vector(unsigned(A)*unsigned(B));							
+		  when "00101" =>   AccVar := ( others => '0');
+							AccVar(2*n-1 downto 0) := std_logic_vector(unsigned(A)*unsigned(B));							
 							
-							-- if (AccVar + ACC) < 2**(2*n) - 1  then -- check if Acc makes CARRY and zeroes him
-							-- AccVar := AccVar + ACC;
-							-- ACC <=AccVar(2*n-1 DOWNTO 0);
-							-- Result := AccVar(2*n-1 DOWNTO 0);
+							if (AccVar + ACC) < 2**(2*n) - 1  then -- check if Acc makes CARRY and zeroes him
+							AccVar := AccVar + ACC;
+							ACC <=AccVar(2*n-1 DOWNTO 0);
+							Result := AccVar(2*n-1 DOWNTO 0);
 
-							-- else
+							else
 					
-							-- tmp := (AccVar + ACC) -2**(2*n);
-							-- Result := tmp(2*n-1 DOWNTO 0);
-							-- ACC<= (others=> '0');
-							-- end if;						
+							tmp := (AccVar + ACC) -2**(2*n);
+							Result := tmp(2*n-1 DOWNTO 0);
+							ACC<= (others=> '0');
+							end if;						
 							
 							
-		  -- when "00110" =>   ACC <= (others=>'0'); --acc Resultet
+		  when "00110" =>   ACC <= (others=>'0'); --acc Resultet
 		  when "00111" => if A<B then
 							Result := Blong; --max
 							else Result := Along;
@@ -105,34 +105,34 @@ variable AccVar,tmp:std_logic_vector(2*n DOWNTO 0);
 	END PROCESS;
 	
 	
-	PROCESS(OPC,A,B)
+	-- PROCESS(OPC,A,B)
 	
-	variable Result:std_logic_vector(2*n-1 downto 0);
-	variable AccVar,tmp:std_logic_vector(2*n DOWNTO 0);
-	begin
-			if OPC(4 downto 0)= "00101" then
-							AccVar := ( others => '0');
-							AccVar(2*n-1 downto 0) := std_logic_vector(unsigned(A)*unsigned(B));							
+	-- variable Result:std_logic_vector(2*n-1 downto 0);
+	-- variable AccVar,tmp:std_logic_vector(2*n DOWNTO 0);
+	-- begin
+			-- if OPC(4 downto 0)= "00101" then
+							-- AccVar := ( others => '0');
+							-- AccVar(2*n-1 downto 0) := std_logic_vector(unsigned(A)*unsigned(B));							
 							
-							if (AccVar + ACC) < 2**(2*n) - 1  then -- check if Acc makes CARRY and zeroes him
-							AccVar := AccVar + ACC;
-							ACC <=AccVar(2*n-1 DOWNTO 0);
-							Result := AccVar(2*n-1 DOWNTO 0);
+							-- if (AccVar + ACC) < 2**(2*n) - 1  then -- check if Acc makes CARRY and zeroes him
+							-- AccVar := AccVar + ACC;
+							-- ACC <=AccVar(2*n-1 DOWNTO 0);
+							-- Result := AccVar(2*n-1 DOWNTO 0);
 
-							else
+							-- else
 					
-							tmp := (AccVar + ACC) -2**(2*n);
-							Result := tmp(2*n-1 DOWNTO 0);
-							ACC<= (others=> '0');
-							end if;						
+							-- tmp := (AccVar + ACC) -2**(2*n);
+							-- Result := tmp(2*n-1 DOWNTO 0);
+							-- ACC<= (others=> '0');
+							-- end if;						
 							
 							
-		  elsif OPC(4 downto 0)= "00110" then
-							ACC <= (others=>'0'); --acc Resultet
-		  end if;
+		  -- elsif OPC(4 downto 0)= "00110" then
+							-- ACC <= (others=>'0'); --acc Resultet
+		  -- end if;
+	-- RES <= Result; -- we used an internal signal Result
 
-RES <= Result; -- we used an internal signal Result
-	end process;
+	-- end process;
 	
 	
 	
