@@ -19,7 +19,7 @@ ARCHITECTURE dtb_output OF tb_output IS
 			signal adderSTATUS,shifterSTATUS,Status : std_logic_vector(k-1 downto 0);
 	
 begin
-	tester : outputSelector generic map(n, m, k) port map(adderRes,shifterRes,adderSTATUS,shifterSTATUS,OPC,HI,LO,Status);
+	tester : outputSelector generic map(n, m, k) port map(adderRes,shifterRes,shifterSTATUS,OPC,HI,LO,Status);
 	-- run for 3600 ns
 	--------- start of stimulus section ------------------	
 	tbout : PROCESS

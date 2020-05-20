@@ -24,14 +24,13 @@ END topALU;
 --------------------------------------------------------------
 ARCHITECTURE ops OF topALU IS
 	Signal 		adderRes,shifterRes: STD_LOGIC_VECTOR (2*n-1 downto 0);
-	Signal		adderSTATUS,shifterSTATUS : std_logic_vector(k-1 downto 0);
-	Signal BtoShift:STD_LOGIC_VECTOR (2 downto 0);
+	Signal		shifterSTATUS : std_logic_vector(k-1 downto 0);
 BEGIN
-	-- BtoShift<= B(2 downto 0);
-	ALUBuild : ALU generic map(n, m, k) port map(cin,A,B,OPC,adderRes,adderSTATUS);
+	ALUBuild : ALU generic map(n, m, k) port map(cin,A,B,OPC,adderRes);
 	ShifterBuild : Shifter generic map(n, m, k) port map(cin,A,B(2 downto 0),OPC,shifterRes,shifterSTATUS);
-	tester : outputSelector generic map(n, m, k) port map(adderRes,shifterRes,adderSTATUS,shifterSTATUS,OPC,HI,LO,Status);
-	
+	tester : outputSelector generic map(n, m, k) port map(adderRes,shifterRes,shifterSTATUS,OPC,HI,LO,Status);
+
+
 END ops;
 
 --configure list -delta collapse

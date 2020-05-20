@@ -24,8 +24,8 @@ ARCHITECTURE dtb OF tb IS
 			
 			signal gen: boolean:=true;
 			signal done: boolean:=false;
-			constant read_file_location:string(1 to 50) := "C:\Users\TalKa\Desktop\orgenized folder\infile.txt";
-			constant write_file_location:string(1 to 51) := "C:\Users\TalKa\Desktop\orgenized folder\outfile.txt";
+			constant read_file_location:string(1 to 33) := "C:\Users\amitn\Desktop\infile.txt";
+			constant write_file_location:string(1 to 34) := "C:\Users\amitn\Desktop\outfile.txt";
 	
 
 begin

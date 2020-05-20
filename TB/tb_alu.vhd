@@ -20,7 +20,7 @@ ARCHITECTURE dftb_top1 OF tb_top1 IS
 			signal STATUS : std_logic_vector(k-1 downto 0);
 	
 begin
-	tester : ALU generic map(n, m, k) port map(cin,A,B,OPC,RES,STATUS);
+	tester : ALU generic map(n, m, k) port map(cin,A,B,OPC,RES);
 	-- run for 3600 ns
 	--------- start of stimulus section ------------------	
 	tb_clk : PROCESS
@@ -34,7 +34,13 @@ begin
 		
 		
 		wait for 100 ns;
-
+OPC<="00001";
+		wait for 100 ns;OPC<="00001";
+		wait for 100 ns;OPC<="00011";
+		wait for 100 ns;OPC<="00001";
+		wait for 100 ns;OPC<="00010";
+		wait for 100 ns;OPC<="00101";
+		wait for 100 ns;
 		
 		
 		

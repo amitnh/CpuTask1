@@ -11,13 +11,14 @@ ENTITY ALU IS
 		m : positive := 5 ; -- OPC length
 		k : positive := 2   -- STATUS length
 	);
-  PORT (    cin : IN STD_LOGIC;
-			A,B : in std_logic_vector(n-1 downto 0);
-			OPC : in std_logic_vector(m-1 downto 0);
+  PORT (    cin : IN STD_LOGIC:='0';
+			A,B : in std_logic_vector(n-1 downto 0):=(others=> '0');
+			OPC : in std_logic_vector(m-1 downto 0):=(others=> '0');
 
 		----------------------------------------
-			RES : out std_logic_vector(2*n-1 downto 0); -- Result(HI,LO)
-			STATUS : out std_logic_vector(k-1 downto 0));
+			RES : out std_logic_vector(2*n-1 downto 0)); -- Result(HI,LO)
+
+
 END ALU;
 ------------- complete the top Architecture code --------------
 ARCHITECTURE struct OF ALU IS
@@ -26,17 +27,31 @@ ARCHITECTURE struct OF ALU IS
 	SIGNAL ACC : std_logic_vector(2*n-1 DOWNTO 0):=(others=> '0'); -- for the BarrelShfter
 	--SIGNAL Result:std_logic_vector(2*n-1 downto 0);
 	--adder:
-	Signal sel:std_logic_vector(1 downto 0);
-	Signal adderRes:std_logic_vector(n-1 downto 0);
-	signal adderCout:std_logic;
+	Signal sel:std_logic_vector(1 downto 0):="00";
+	Signal adderRes:std_logic_vector(n-1 downto 0):=(others=> '0');
+	signal adderCout:std_logic:='0';
 BEGIN
 
---AddSub:Adder generic map (n) port map (cin,A,B,sel,adderCout,adderRes);
+AddSub:Adder generic map (n) port map (cin,A,B,sel,adderCout,adderRes);
+PROCESS (OPC) --for addapting the SEL to the right OPC command
+BEGIN
+case OPC(1 downto 0) is
+		  when "01" =>   
+							sel <= "00";												
+		  when "10" =>   
+							sel <= "10";
+		  when "11" =>   
+		  					sel <= "01";
+		when others => sel <= "01"; -- NOT FOR ME
+
+		end case;
+END PROCESS;
+
+
 
 PROCESS (OPC,A,B,cin)
 variable Along,Blong,Result:std_logic_vector(2*n-1 downto 0);
 variable AccVar,tmp:std_logic_vector(2*n DOWNTO 0);
-
 
 	BEGIN
 	
@@ -46,19 +61,17 @@ variable AccVar,tmp:std_logic_vector(2*n DOWNTO 0);
 	Blong(n-1 downto 0) := B;
 	
 	Result := ( others => '0');
-	STATUS <= "00";
+	
 
 	  	case OPC(4 downto 0) is
-		  when "00001" =>   Result := Along+Blong;
-							--sel <= "00";
-							--Result(n downto 0) := adderCout & adderRes;
+		  when "00001" =>   
+							Result(n downto 0) := adderCout & adderRes;	
+		  when "00010" =>   
+							Result(n downto 0) := adderCout & adderRes;
+							Result(2*n-1 downto n) := (others => Result(n));
+		  when "00011" =>   
+							Result(n downto 0) := adderCout & adderRes;
 							
-		  when "00010" =>   Result := Along-Blong;
-							--sel <= "10";
-							--Result(n downto 0) := adderCout & adderRes;
-		  when "00011" =>   Result := Along+Blong+cin;
-		  					--sel <= "01";
-							--Result(n downto 0) := adderCout & adderRes;
 		  when "00100" =>   Result := std_logic_vector(unsigned(A)*unsigned(B));
 		  
 		  when "00101" =>   AccVar := ( others => '0');
@@ -70,7 +83,7 @@ variable AccVar,tmp:std_logic_vector(2*n DOWNTO 0);
 							Result := AccVar(2*n-1 DOWNTO 0);
 
 							else
-							STATUS(0) <= '1';
+					
 							tmp := (AccVar + ACC) -2**(2*n);
 							Result := tmp(2*n-1 DOWNTO 0);
 							ACC<= (others=> '0');
@@ -96,11 +109,9 @@ variable AccVar,tmp:std_logic_vector(2*n DOWNTO 0);
 		   when others => Result := (others=> '1'); --not for me 
 		end case;
 		
-		if Result = 0 then 
-			STATUS(1) <= '1';
-		end if;
-				
+
 		RES <= Result; -- we used an internal signal Result
+		
 	END PROCESS;
 	
 	

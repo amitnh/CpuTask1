@@ -30,8 +30,8 @@ package aux_package is
 			A,B : in std_logic_vector(n-1 downto 0);
 			OPC : in std_logic_vector(m-1 downto 0);
 		----------------------------------------
-			RES : out std_logic_vector(2*n-1 downto 0); -- RES(HI,LO)
-			STATUS : out std_logic_vector(k-1 downto 0));
+			RES : out std_logic_vector(2*n-1 downto 0)); -- RES(HI,LO)
+			
 END component;
 -----------------------------------------------------------------
 component Shifter IS
@@ -57,7 +57,7 @@ component outputSelector IS
 		k : positive := 2   -- STATUS length
 	);
   PORT (    adderRes,shifterRes: in STD_LOGIC_VECTOR (2*n-1 downto 0);
-			       adderSTATUS,shifterSTATUS : in std_logic_vector(k-1 downto 0);
+			       shifterSTATUS : in std_logic_vector(k-1 downto 0);
             OPC : in std_logic_vector(m-1 downto 0);
 
 		----------------------------------------
