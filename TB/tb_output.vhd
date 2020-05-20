@@ -16,7 +16,7 @@ ARCHITECTURE dtb_output OF tb_output IS
 			signal OPC : std_logic_vector(m-1 downto 0);
 		----------------------------------------
 			signal adderRes,shifterRes : std_logic_vector(2*n-1 downto 0); -- RES(HI,LO)
-			signal adderSTATUS,shifterSTATUS,Status : std_logic_vector(k-1 downto 0);
+			signal shifterSTATUS,Status : std_logic_vector(k-1 downto 0);
 	
 begin
 	tester : outputSelector generic map(n, m, k) port map(adderRes,shifterRes,shifterSTATUS,OPC,HI,LO,Status);
@@ -24,18 +24,21 @@ begin
 	--------- start of stimulus section ------------------	
 	tbout : PROCESS
 	BEGIN
-		adderRes<="0000000011111111";
-		shifterRes <="1111111100000000";
-		adderSTATUS<="11";
+		adderRes<="0000000000000000";
+		shifterRes <="0000000000000001";
 		shifterSTATUS<= "00";
 		OPC <= "00001";
 	    wait for 100 ns;
 		OPC <= "11111";
+		shifterRes <="0000000000000001";
+		shifterSTATUS<= "11";
 	    wait for 100 ns;
 		OPC <= "01100";
 	    wait for 100 ns;
+		adderRes<="0011000000000000";
 		OPC <= "00000";
 	    wait for 100 ns;
+		adderRes<="0011000000000100";
 		OPC <= "11011";
 	    wait for 100 ns;
 		OPC <= "10111";

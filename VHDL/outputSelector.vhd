@@ -14,8 +14,7 @@ ENTITY outputSelector IS
 			adderRes,shifterRes: in STD_LOGIC_VECTOR (2*n-1 downto 0);
 			shifterSTATUS : in std_logic_vector(k-1 downto 0);
 			OPC : in std_logic_vector(m-1 downto 0);
-
-		----------------------------------------		
+		
 		----------------------------------------
 			HI,LO : out std_logic_vector(n-1 downto 0);
 			Status: out std_logic_vector(k-1 downto 0));
@@ -28,14 +27,13 @@ BEGIN
 
 PROCESS (OPC,adderRes,shifterRes,shifterSTATUS)
 BEGIN
-    STATUS<="00";
 	if OPC(3 downto 2) = "11" then --shifter
 		HI<=shifterRes(2*n-1 downto n);
 		LO<=shifterRes(n-1 downto 0);
 		Status<= shifterSTATUS;
 	else -- alu result
-		if adderRes(2*n-1 downto n)>0 then STATUS(0)<='1'; END IF;
-		if adderRes(n-1 downto 0)=0 then STATUS(1)<='1'; END IF;
+		if adderRes(2*n-1 downto n)>0 then STATUS(0)<='1'; else STATUS(0)<='0'; END IF;
+		if adderRes(n-1 downto 0)=0 then STATUS(1)<='1';else STATUS(1)<='0'; END IF;
 		HI<=adderRes(2*n-1 downto n);
 		LO<=adderRes(n-1 downto 0);
 	end if;

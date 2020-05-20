@@ -53,15 +53,6 @@ begin
 	writeline(outfile,L);
 
 		--------------------------------
-	wait for ton;
-	clk<='1';
-	OPC<=(others => '0');
-	A<=(others => '0');
-	B<=(others => '0');
-	cin<='0';
-	
-	wait for ton;
-	clk<='0';
 
 	while not endfile(infile) loop
 		readline (infile,L);
