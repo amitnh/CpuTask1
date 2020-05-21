@@ -26,26 +26,166 @@ begin
 	--------- start of stimulus section ------------------	
 	tb_top_test : PROCESS
 	BEGIN
-		A<="00000001";--add no carry
-		B<="10000000";
-		cin <= '1' ;
-		OPC <= "00001";
-		wait for 100 ns; --RLC 5 times
 		A<="00000001";
-		B<="00000101";
+		B<="10000000";
 		cin <= '0' ;
-		OPC <= "01101";
-		wait for 100 ns; --XOR
-		A<="10101010";
-		B<="10001000";
+		OPC <= "00001";		--add no carry
+		wait for 50 ns; 
+		cin <= '1' ;
+		wait for 50 ns;
+
+		A<="00000001";
+		B<="10000000";
 		cin <= '0' ;
-		OPC <= "01011";
-		wait for 100 ns; --RRC 3 times
-		A<="01010101";
-		B<="00000011";
-		cin <= '0' ;
-		OPC <= "01111";
+		OPC <= "00010";		--sub
+		wait for 50 ns; 
+		cin <= '1' ;
+		wait for 50 ns;
 		
+		A<="00000001";
+		B<="10000000";
+		cin <= '0' ;
+		OPC <= "00011";		--add with carry
+		wait for 50 ns; 
+		cin <= '1' ;
+		wait for 50 ns;
+		
+		A<="00000011";
+		B<="00000100";
+		cin <= '0' ;
+		OPC <= "00100";		--mult
+		wait for 50 ns; 
+		cin <= '1' ;
+		wait for 50 ns;
+		
+		A<="00000001";
+		B<="00000010";
+		cin <= '0' ;
+		OPC <= "00101";		--mac
+		wait for 50 ns; 
+		 
+		A<="00000001";
+		B<="00000010";
+		cin <= '0' ;
+		OPC <= "00101";		--mac
+		wait for 50 ns; 
+		A<="00000001";
+		B<="00000010";
+		cin <= '0' ;
+		OPC <= "00101";		--mac
+		wait for 50 ns; 
+		 
+		
+		A<="00000001";
+		B<="10000000";
+		cin <= '0' ;
+		OPC <= "00110";		--mac rst
+		wait for 50 ns; 
+		
+		
+		A<="00000001";
+		B<="10000000";
+		cin <= '0' ;
+		OPC <= "00111";		--max
+		wait for 50 ns; 
+		cin <= '1' ;
+		wait for 50 ns;
+		
+		A<="00000001";
+		B<="10000000";
+		cin <= '0' ;
+		OPC <= "01000";		--min
+		wait for 50 ns; 
+		cin <= '1' ;
+		wait for 50 ns;
+		
+		A<="00000001";
+		B<="10000000";
+		cin <= '0' ;
+		OPC <= "01001";		--AND
+		wait for 50 ns; 
+		cin <= '1' ;
+		wait for 50 ns;
+		
+		A<="00000001";
+		B<="10000000";
+		cin <= '0' ;
+		OPC <= "01010";		--OR
+		wait for 50 ns; 
+		cin <= '1' ;
+		wait for 50 ns;
+		
+		A<="00000001";
+		B<="10000000";
+		cin <= '0' ;
+		OPC <= "01011";		--XOR
+		wait for 50 ns; 
+		cin <= '1' ;
+		wait for 50 ns;
+		
+		A<="00000001";
+		B<="00000010";
+		cin <= '0' ;
+		OPC <= "01100";		--RLA
+		wait for 50 ns;
+		A<="00000001";
+		B<="00000100";
+		cin <= '0' ;
+		OPC <= "01100";		--RLA
+		wait for 50 ns; 
+		A<="00000001";
+		B<="00100000";
+		cin <= '0' ;
+		OPC <= "01100";		--RLA
+		wait for 50 ns; 
+		
+		A<="00000001";
+		B<="00000100";
+		cin <= '0' ;
+		OPC <= "01101";		--RLC
+		wait for 50 ns;
+		A<="00000001";
+		B<="00010000";
+		cin <= '0' ;
+		OPC <= "01101";		--RLC
+		wait for 50 ns; 
+		A<="00000001";
+		B<="10000000";
+		cin <= '0' ;
+		OPC <= "01101";		--RLC
+		wait for 50 ns; 
+		
+		A<="00000001";
+		B<="00000100";
+		cin <= '0' ;
+		OPC <= "01110";		--RRA
+		wait for 50 ns; 
+		A<="00000001";
+		B<="00010000";
+		cin <= '0' ;
+		OPC <= "01110";		--RRA
+		wait for 50 ns; 
+		A<="00000001";
+		B<="10000000";
+		cin <= '0' ;
+		OPC <= "01110";		--RRA
+		wait for 50 ns; 
+
+		A<="00000001";
+		B<="00000100";
+		cin <= '0' ;
+		OPC <= "01111";		--RRC
+		wait for 50 ns; 
+		A<="00000001";
+		B<="00010000";
+		cin <= '0' ;
+		OPC <= "01111";		--RRC
+		wait for 50 ns;
+		A<="00000001";
+		B<="10000000";
+		cin <= '0' ;
+		OPC <= "01111";		--RRC
+		wait for 50 ns; 
 		
 		
 		WAIT;
@@ -62,7 +202,7 @@ begin
 	tb_rst : PROCESS
 	BEGIN
 		rst <= '0';
-		-- wait for 100 ns;
+		-- wait for 50 ns;
 		-- rst <= '0';
 		wait;
 	END PROCESS tb_rst;
